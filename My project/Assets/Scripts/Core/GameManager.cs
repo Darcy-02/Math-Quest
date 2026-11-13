@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
+
 public class GameManager : MonoBehaviour
 {
     [Header("UI")]
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Win")]
     public GameObject winPanel;
+    public ParticleSystem winParticles;
 
     private QuestionPrompter questionPrompter;
     private Question currentQuestion;
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
         currentLevel = 1;
 
         winPanel.SetActive(false);
+        winParticles.Stop();
 
         enterButton.onClick.AddListener(HandleSubmit);
 
@@ -53,6 +57,7 @@ public class GameManager : MonoBehaviour
 
         LoadQuestion();
     }
+
 
     private void LoadQuestion()
     {
@@ -107,6 +112,14 @@ public class GameManager : MonoBehaviour
         feedbackText.text = "";
 
         winPanel.SetActive(true);
+
+        winParticles.gameObject.SetActive(true);
+        winParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        winParticles.Play();
+
+        Debug.Log("Particles playing: " + winParticles.isPlaying);
+        Debug.Log("Particle count: " + winParticles.particleCount);
+
     }
 
     private void HandleSubmit()
